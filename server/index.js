@@ -2,12 +2,14 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/database');
 const cors = require('cors');
+//Cargar variables de entorno.
+dotenv.config();
 
 //Imports
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes')
 
-dotenv.config();
+
 const app = express();
 
 connectDB();
