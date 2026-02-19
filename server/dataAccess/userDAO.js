@@ -10,6 +10,15 @@ class UserDAO {
         }
     }
 
+    async getUserByUsername(username){
+        try {
+            const user = await User.findOne({username});
+            return user;
+        } catch (error) {
+            throw error;
+        }
+    }
+
     async getAllUsers(){
         try {
             //Obtener todos los usuarios, excluyendo contraseña.

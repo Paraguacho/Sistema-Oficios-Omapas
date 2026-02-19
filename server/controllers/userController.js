@@ -23,7 +23,10 @@ const getUserById = async (req,res) => {
         }
         res.status(200).json(users);
     } catch (error) {
-        res.status(500).json({message: 'Problema al obtener el usuario'});
+        res.status(500).json({
+            message: 'Problema al obtener el usuario',
+            error: error.message
+        });
     }
 }
 
