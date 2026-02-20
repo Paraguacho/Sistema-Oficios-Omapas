@@ -15,7 +15,15 @@ const recipientSchema = new mongoose.Schema({
         type: Date, // Fecha exacta de cuando abrió el oficio
         default: null
     },
-
+    //Favorito
+    isStarred: {
+        type: Boolean,
+        default: false
+    },
+    isArchived: {
+        type: Boolean,
+        default: false
+    },
     // Firma 
     signed: {
         type: Boolean,
