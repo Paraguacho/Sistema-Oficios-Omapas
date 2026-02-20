@@ -73,7 +73,7 @@ class OficioDAO {
         try {
             //Busca el oficio y lo actualiza.
             return await Oficio.findOneAndUpdate(
-                {_id: oficioId, 'recipients.users' : userId},
+                {_id: oficioId, 'recipients.user' : userId},
                 {
                     $set: {
                         'recipients.$.seen':true,
@@ -100,7 +100,7 @@ class OficioDAO {
                          */
                         'recipients.$.signed' : true,
                         'recipients.$.signedAt' : new Date(),
-                        'recipients.$.signatureHas' : signature
+                        'recipients.$.signatureHash' : signature
                     }
                 },
                 {new : true}
