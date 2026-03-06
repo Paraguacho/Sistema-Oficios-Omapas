@@ -81,7 +81,7 @@ class OficioDAO {
                     }
                 },
                 //Devolver documento actualizado
-                {new: true} 
+                {returnDocument: 'after'} 
             )
         } catch (error) {
             throw error;
@@ -103,7 +103,7 @@ class OficioDAO {
                         'recipients.$.signatureHash' : signature
                     }
                 },
-                {new : true}
+                {returnDocument: 'after'}
             );
         } catch (error) {
             throw error;
@@ -116,7 +116,7 @@ class OficioDAO {
             return await Oficio.findOneAndUpdate(
                 {_id: oficioId, 'recipients.user':userId},
                 {$set:{'recipients.$.isStarred': status}},
-                {new : true}
+                {returnDocument: 'after'}
             )
         } catch (error) {
             throw error;
@@ -128,7 +128,7 @@ class OficioDAO {
             return await Oficio.findOneAndUpdate(
                 {_id: oficioId, 'recipients.user':userId},
                 {$set:{'recipients.$.isArchived': status}},
-                {new : true}
+                {returnDocument: 'after'}
             )
         } catch (error) {
             throw error;

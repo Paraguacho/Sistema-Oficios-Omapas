@@ -8,6 +8,7 @@ dotenv.config();
 //Imports
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes')
+const oficioRoutes = require('./routes/oficioRoutes')
 
 
 const app = express();
@@ -20,7 +21,8 @@ app.use(express.json());
 
 //Routes
 app.use('/api/users', userRoutes);
-app.use('/api/auth', authRoutes)
+app.use('/api/auth', authRoutes);
+app.use('/api/oficios', oficioRoutes);
 
 app.get('/', (req,res) =>{
     res.send('API funcionando.')

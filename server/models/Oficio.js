@@ -67,7 +67,7 @@ const oficioSchema = new mongoose.Schema({
     },
     requiresSignature: {
         type: Boolean,
-        default: true // Define si el botón "Firmar" aparece o solo es informativo
+        default: false // Define si el botón "Firmar" aparece o solo es informativo
     },
     files: [{
         url: String, // Ruta del archivo 
