@@ -1,4 +1,6 @@
 const UserDAO = require('../dataAccess/userDAO');
+const Counter = require('../models/Counter');
+const bcrypt = require('bcryptjs')
 
 const getUsers = async (req,res) => {
     try {
