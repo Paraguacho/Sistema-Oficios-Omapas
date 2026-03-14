@@ -1,6 +1,7 @@
 const oficioDAO = require('../dataAccess/oficioDAO');
 const userDAO = require('../dataAccess/userDAO');
 const Oficio = require('../models/Oficio');
+const OficioDTO = require('../dtos/oficioDTO');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
@@ -34,10 +35,11 @@ const createOficio = async (req,res)=>{
 //Bandeja de entrada
 const getInbox = async (req,res)=>{
     try {
-        const oficios = await oficioDAO.getInbox(req.user.id)
+        const oficios = await oficioDAO.getInbox(req.user.id);
+        const oficiosDTO = oficios.map( oficio => new OficioDTO(oficio));
         res.status(200).json({
-            count: oficios.length,
-            data: oficios
+            count: oficiosDTO.length,
+            data: oficiosDTO
         });
     } catch (error) {
         res.status(500).json({
@@ -51,9 +53,10 @@ const getInbox = async (req,res)=>{
 const getSent = async(req,res)=>{
     try {
         const oficios = await oficioDAO.getSentOficios(req.user.id);
+        const oficiosDTO = oficios.map( oficio => new OficioDTO(oficio));
         res.status(200).json({
-            count: oficios.length,
-            data: oficios
+            count: oficiosDTO.length,
+            data: oficiosDTO
         });
     } catch (error) {
         res.status(500).json({
@@ -72,7 +75,7 @@ const getOficio = async (req,res) =>{
             });
         }
         res.status(200).json({
-            data: oficio
+            data: new OficioDTO(oficio)
         });
     } catch (error) {
         res.status(500).json({
@@ -93,9 +96,10 @@ const searchOficio= async (req,res) =>{
             });
         }
         const oficios = await oficioDAO.searchOficioBySubject(q, req.user.id);
+        const oficioDTO = oficios.map(oficio => new OficioDTO(oficio));
         res.status(200).json({
-            count: oficios.length,
-            data : oficios 
+            count: oficioDTO.length,
+            data : oficioDTO
         });
     } catch (error) {
         res.status(500).json({
@@ -197,9 +201,10 @@ const toggleArchived = async (req,res) =>{
 const getStarred = async (req,res) =>{
     try {
         const oficios = await oficioDAO.getStarredOficios(req.user.id);
+        const oficiosDTO = oficios.map( oficio => new OficioDTO(oficio));
         res.status(200).json({
-            count: oficios.length,
-            data: oficios
+            count: oficiosDTO.length,
+            data: oficiosDTO
         });
     } catch (error) {
         res.status(500).json({
@@ -211,11 +216,12 @@ const getStarred = async (req,res) =>{
 
 const getArchived = async (req,res) =>{
     try {
-        const oficios = await oficioDAO.getArchivedOficios(req.user.id)
+        const oficios = await oficioDAO.getArchivedOficios(req.user.id);
+        const oficiosDTO = oficios.map( oficio => new OficioDTO(oficio));
         res.status(200).json({
-            count: oficios.length,
-            data: oficios
-        })
+            count: oficiosDTO.length,
+            data: oficiosDTO
+        });
     } catch (error) {
         res.status(500).json({
             message: 'Error al cargar archivados',
