@@ -27,9 +27,10 @@ const authorize = (...levels) =>{
             return res.status(403).json({
                 message: `El nivel ${req.user.level} no tiene permiso para esta accion.`
             })
-            next()
         }
+            next()
     }
-}   
+}
+
 
 module.exports = {protect,authorize};

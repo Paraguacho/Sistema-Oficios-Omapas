@@ -21,8 +21,8 @@ class UserDAO {
 
     async getAllUsers(){
         try {
-            //Obtener todos los usuarios, excluyendo contraseña.
-            const users = await User.find({}, '-password');
+            //Obtener todos los usuarios
+            const users = await User.find({});
             return users;
         } catch (error) {
             throw error;
