@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const userDAO = require('../dataAccess/userDAO');
+const UserDTO = require('../dtos/userDTO');
 
 const login = async(req,res)=>{
     try {
@@ -37,12 +38,7 @@ const login = async(req,res)=>{
 
         res.status(200).json({
             token, 
-            user: {
-                id: user._id,
-                name: user.name,
-                username: user.username,
-                level : user.level
-            }
+            user : new UserDTO(user)
         })
 
     } catch (error) {
