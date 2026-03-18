@@ -33,7 +33,7 @@ class GroupDAO{
             return await Group.findByIdAndUpdate(
                 {_id: groupId, owner: userId, },
                 updateData,
-                {returnDocument: after}
+                {returnDocument: 'after'}
             ).populate('members', 'name fatherName department position');
         } catch (error) {
             throw error;             

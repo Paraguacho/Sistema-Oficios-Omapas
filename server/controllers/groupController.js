@@ -1,4 +1,4 @@
-const groupDAO = require('../dataAccess/oficioDAO');
+const groupDAO = require('../dataAccess/groupDAO');
 const GroupDTO = require('../dtos/groupDTO');
 
 const createGroup = async (req,res) =>{
