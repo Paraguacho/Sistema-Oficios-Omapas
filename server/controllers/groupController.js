@@ -28,7 +28,7 @@ const createGroup = async (req,res) =>{
     }
 }
 
-const getGroups = async (res,res) =>{
+const getGroups = async (req,res) =>{
     try {
         const groups = await groupDAO.getGroupsByOwner(req.user.id);
         const groupsDTO = groups.map(g => new GroupDTO(g));

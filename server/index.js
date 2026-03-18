@@ -9,7 +9,7 @@ dotenv.config();
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes')
 const oficioRoutes = require('./routes/oficioRoutes')
-
+const groupRoutes = require('./routes/groupRoutes'); 
 
 const app = express();
 
@@ -23,6 +23,7 @@ app.use(express.json());
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/oficios', oficioRoutes);
+app.use('/api/groups', groupRoutes);
 
 app.get('/', (req,res) =>{
     res.send('API funcionando.')
