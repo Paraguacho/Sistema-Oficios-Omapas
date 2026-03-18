@@ -28,7 +28,7 @@ class GroupDAO{
         }
     }
 
-    async updateGroup(groupId, userId, updateData){
+    async updateData(groupId, userId, updateData){
         try {
             return await Group.findByIdAndUpdate(
                 {_id: groupId, owner: userId, },
