@@ -40,7 +40,15 @@ class oficioDTO{
             signed: r.signed,
             signedAt: r.signedAt,
             signatureHash: r.signatureHash
-        }))}
+        }))
+        this.traceabilityStats = {
+            totalSent : this.recipients.length,
+            totalSeen : this.recipients.filter(r => r.seen).length,
+            totalSigned : this.recipients.filter(r => r.signed).length,
+            pendingSignatures : this.recipients.filter(r => !r.signed).length
+
+        }
+    }
     }
 }
 module.exports = oficioDTO;
