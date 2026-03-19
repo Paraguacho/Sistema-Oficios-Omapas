@@ -80,4 +80,16 @@ const oficioSchema = new mongoose.Schema({
     timestamps: true
 });
 
+//oficios sin leer
+oficioSchema.index({'recipients.user' : 1, 'recipients.seen' : 1, 'recipients.isArchived' : 1 });
+//oficios que requieren firma
+oficioSchema.index({'recipients.user': 1, 'recipients.signed': 1, requiresSignature: 1});
+//oficio que el user envio este mes 
+oficioSchema.index({sender: 1, createdAt: -1});
+//oficios urgentes
+oficioSchema.index({'recipients.user': 1 , priority: 1 , 'recipients.seen': 1});
+//oficio que el user envio y aun faltan de firmar
+oficioSchema.index({sender:1,requiresSignature:1,'recipients.signed':1});
+
+
 module.exports = mongoose.model('Oficio', oficioSchema);
