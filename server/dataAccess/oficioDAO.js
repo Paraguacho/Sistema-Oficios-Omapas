@@ -159,7 +159,49 @@ class OficioDAO {
         }
     }
 
+    async getDashboardStats(userId){
+        try {
+            //First day month
+            const startMonth = new Date (new Date().getFullYear(), new Date().getMonth(), 1);
+            //Promise para hacer las consulltas al mismo tiempo
+            const [unread, pendingSignature, sentThisMonth, urgents, waitSignature ] = await Promise.all([
+                //Oficios que no e visto
+                Oficio.countDocuments({
+                    'recipients' : {$elemMatch: {user: userId, seen: false, isArchived: false}}
+                }),
+                //Signature pending from user 
+                Oficio.countDocuments({
+                    requiresSignature: true,
+                    'recipients' : {$elemMatch: {user: userId, signed: false, isArchived: false}}
+                }),
+                //Oficios sended by user 
+                Oficio.countDocuments({
+                    sender: userId,
+                    createdAt: {$gte: startMonth}
+                }),
+                Oficio.countDocuments({
+                    priority: 'Urgente',
+                    'recipients': {$elemMatch: {user:userId, seen : false, isArchived: false}}
+                }),
+                //Enviados por mi que aun no me firman
+                Oficio.countDocuments({
+                    sender:userId,
+                    requiresSignature: true,
+                    'recipients.signed' : false
+                })
+            ]);
 
+            return {
+                unread,
+                pendingSignature ,
+                sentThisMonth,
+                urgents,
+                waitSignature
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = new OficioDAO()
