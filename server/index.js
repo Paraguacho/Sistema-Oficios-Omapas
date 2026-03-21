@@ -10,6 +10,7 @@ const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes')
 const oficioRoutes = require('./routes/oficioRoutes')
 const groupRoutes = require('./routes/groupRoutes'); 
+const notificationRoutes = require('./routes/notificationRoutes'); 
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/oficios', oficioRoutes);
 app.use('/api/groups', groupRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 app.get('/', (req,res) =>{
     res.send('API funcionando.')
