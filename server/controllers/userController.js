@@ -2,6 +2,7 @@ const UserDAO = require('../dataAccess/userDAO');
 const Counter = require('../models/Counter');
 const bcrypt = require('bcryptjs')
 const UserDTO = require('../dtos/userDTO');
+const User = require('../models/User');
 const userDAO= require('../dataAccess/userDAO');
 
 const createUser = async (req,res) =>{
@@ -74,4 +75,19 @@ const getUserById = async (req,res) => {
     }
 }
 
-module.exports = {createUser, getUsers, getUserById};
+const getDepartments = async(req,res) =>{
+    try {
+        const departments = User.schema.path('department').enumValues
+        res.status(200).json({
+            count: departments.length,
+            data: departments
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error al obtener los departamentos',
+            error: error.message
+        });
+    }
+}
+
+module.exports = {createUser, getUsers, getUserById, getDepartments};
