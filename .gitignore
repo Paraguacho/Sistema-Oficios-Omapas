@@ -16,5 +16,5 @@ npm-debug.log*
 **/build
 
 # Ignorar los archivos, pero conservar la carpeta uploads
-uploads/*
-!uploads/.gitkeep
+server/uploads/*
+!server/uploads/.gitkeep
