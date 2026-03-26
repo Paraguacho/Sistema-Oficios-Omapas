@@ -2,6 +2,8 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/database');
 const cors = require('cors');
+const path = require('path')
+
 //Cargar variables de entorno.
 dotenv.config();
 
@@ -11,7 +13,7 @@ const authRoutes = require('./routes/authRoutes')
 const oficioRoutes = require('./routes/oficioRoutes')
 const groupRoutes = require('./routes/groupRoutes'); 
 const notificationRoutes = require('./routes/notificationRoutes'); 
-
+const uploadRoutes = require('./routes/uploadRoutes');
 const app = express();
 
 connectDB();
@@ -19,6 +21,8 @@ connectDB();
 //Middleware/Json
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname,'uploads')))//Carpeta publica uploads
+
 
 //Routes
 app.use('/api/users', userRoutes);
@@ -26,6 +30,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/oficios', oficioRoutes);
 app.use('/api/groups', groupRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/uploads', uploadRoutes);
 
 app.get('/', (req,res) =>{
     res.send('API funcionando.')
@@ -34,5 +39,4 @@ app.get('/', (req,res) =>{
 const PORT = process.env.PORT;
 app.listen(PORT,()=>{
     console.log(`Servidor corriendo en: ${PORT}`)
-
 })
