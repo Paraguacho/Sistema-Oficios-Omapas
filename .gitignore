@@ -1,4 +1,4 @@
-#Dependencias.
+#Dependencias
 **/node_modules
 
 
@@ -14,3 +14,7 @@ npm-debug.log*
 # Build 
 **/dist
 **/build
+
+# Ignorar los archivos, pero conservar la carpeta uploads
+uploads/*
+!uploads/.gitkeep
