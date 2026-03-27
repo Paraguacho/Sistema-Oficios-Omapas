@@ -1,6 +1,6 @@
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import Login from './pages/Login';
 
-const Login = () =>  <div style={{padding: '20px'}}><h1>Pantalla login</h1></div>
 const Bandeja = () => <div style={{padding: '20px'}}><h1>Bandeja de Entrada</h1></div> 
 
 function App() {
