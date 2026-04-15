@@ -2,8 +2,13 @@ import { Link, useNavigate, useLocation} from 'react-router-dom';
 import {
     HomeIcon,
     InboxIcon,
-    DocumentPlusIcon,
-    ArrowLeftOnRectangleIcon
+    PaperAirplaneIcon,
+    StarIcon,
+    ArrowLeftOnRectangleIcon,
+    ArchiveBoxIcon,
+    PencilSquareIcon,
+    Cog6ToothIcon,
+    Squares2X2Icon
 } from '@heroicons/react/24/outline';
 
 const Sidebar = () =>{
@@ -39,10 +44,40 @@ return (
                 Bandeja de Entrada
             </Link>
 
-            <Link to='/nuevo-oficio' className={navItemClass('/nuevo-oficio')}>
-                <DocumentPlusIcon className='w-6 h-6'/>
-                Redactar Oficio
+            <Link to='/sent' className={navItemClass('/sent')}>
+                <PaperAirplaneIcon className='w-6 h-6'/>
+                Enviados
             </Link>
+
+            <Link to='/starred' className={navItemClass('/starred')}>
+                <StarIcon className='w-6 h-6'/>
+                Descatados
+            </Link>
+            
+            <Link to='/archived' className={navItemClass('/archived')}>
+                <ArchiveBoxIcon className='w-6 h-6'/>
+                Archivados
+            </Link>
+
+            <Link to='/signed' className={navItemClass('/signed')}>
+                <PencilSquareIcon className='w-6 h-6'/>
+                Firmados
+            </Link>
+
+            <Link to='/archived' className={navItemClass('/archived')}>
+                <Squares2X2Icon className='w-6 h-6'/>
+                Panel Trazabilidad
+            </Link>
+
+            <Link to='/archived' className={navItemClass('/archived')}>
+                <Cog6ToothIcon className='w-6 h-6'/>
+                Configuracion
+            </Link>
+
+            
+            
+            
+            
         </nav>
         
         {/* Cerrar Sesion */}
