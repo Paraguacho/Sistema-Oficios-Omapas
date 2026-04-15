@@ -3,7 +3,7 @@ import Sidebar from "./SideBar";
 
 const MainLayout = () =>{
     return (
-        <div className="flex min-h-screen bg-zinc-50">
+        <div className="flex h-screen bg-zinc-50 overflow-hidden">
             {/* Sidebar */}
             <Sidebar/>
 
@@ -14,7 +14,7 @@ const MainLayout = () =>{
                     </h2>
                 </header>
                 {/* Bandejas */}
-                <div className="p-8">
+                <div className="p-5 flex-1 flex flex-col overflow-hidden">
                     <Outlet/>
                 </div>
             </main>
