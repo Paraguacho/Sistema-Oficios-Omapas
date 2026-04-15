@@ -3,7 +3,7 @@ import {
     HomeIcon,
     InboxIcon,
     DocumentPlusIcon,
-    AllowLeftOnRectangleIcon
+    ArrowLeftOnRectangleIcon
 } from '@heroicons/react/24/outline';
 
 const Sidebar = () =>{
@@ -28,7 +28,7 @@ return (
     <aside className='w-72 bg-white border-r border-zinc-200 flex flex-col p-6 h-screen sticky top-0'>
         {/* Logo */}
         <div className='flex items-center gap-3 mb-12 px-2'>
-            <img src='/src/assets/logo-oomapas.png' alt='OOMAPAS' className='w-10 h-auto'/>
+            <img src='/src/assets/logoSidebar.png' alt='OOMAPAS' className='rounded-full w-10 h-auto'/>
             <h1 className='text-xl font-bold text-zinc-900 leading-tight tracking-tight'>OOMAPAS</h1>
         </div>
 
@@ -50,7 +50,7 @@ return (
             onClick={handleLogout}
             className='mt-auto flex items-center gap-3 px-4 py-3 text-red-600 font-semibold hover:bg-red-50 rounded-xl transition-colors cursor-pointer'
         >
-            <AllowLeftOnRectangleIcon className='w-6 h-6'/>
+            <ArrowLeftOnRectangleIcon className='w-6 h-6'/>
             Cerrar Sesión
         </button>
     </aside>

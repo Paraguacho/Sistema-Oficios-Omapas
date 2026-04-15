@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 import Login from './pages/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import MainLayout from './components/MainLayout';
@@ -14,8 +14,9 @@ function App() {
         
         <Route element={<ProtectedRoute />}>  
           <Route element={<MainLayout/>}>     
+            <Route path='/' element={<Navigate to = "/inbox" replace />}/>
             <Route path='/inbox' element={<Bandeja/>}/>
-        </Route>
+         </Route>
         </Route>
         
         
