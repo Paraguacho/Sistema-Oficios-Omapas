@@ -87,7 +87,7 @@ const DocumentTable = ({
                     <span className={`text-base truncate ${isRead && !isChecked ? 'font-medium text-zinc-500' : 'font-bold text-zinc-800'}`}>
                       {doc.sender?.department || 'Departamento General'}
                     </span>
-                    <span className={`text-xs truncate ${isRead && !isChecked ? 'text-zinc-400' : 'text-zinc-500 font-medium'}`}>
+                    <span className={`text-l truncate ${isRead && !isChecked ? 'text-zinc-400' : 'text-zinc-500 font-medium'}`}>
                       {`${doc.sender?.position} - ${doc.sender?.fullName} `  || 'Usuario desconocido'}
                     </span>
                   </div>

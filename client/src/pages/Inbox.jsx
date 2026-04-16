@@ -9,7 +9,7 @@ const Inbox = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedIds, setSelectedIds] = useState([]);
   const [currentUserId, setCurrentUserId] = useState(null);
-  
+  const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9; 
 
@@ -26,6 +26,10 @@ const Inbox = () => {
     }
     fetchDocuments();
   }, []);
+  //Cada vez que busca, actualiza pag1
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
 
   const fetchDocuments = async () => {
     try {
@@ -39,16 +43,28 @@ const Inbox = () => {
     }
   };
 
-  const totalPages = Math.ceil(documents.length / itemsPerPage) || 1;
+  const filteredDocuments = documents.filter((doc) => {
+    if (!searchTerm) return true;
+    
+    const lowerSearch = searchTerm.toLowerCase();
+    const subjectMatch = (doc.subject || '').toLowerCase().includes(lowerSearch);
+    const deptMatch = (doc.sender?.department || '').toLowerCase().includes(lowerSearch);
+    const nameMatch = (doc.sender?.fullName || doc.sender?.username || '').toLowerCase().includes(lowerSearch);
+    
+    return subjectMatch || deptMatch || nameMatch;
+  });
+
+  const totalPages = Math.ceil(filteredDocuments.length / itemsPerPage) || 1;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentDocuments = documents.slice(indexOfFirstItem, indexOfLastItem);
+  const currentDocuments = filteredDocuments.slice(indexOfFirstItem, indexOfLastItem);
 
   const goToNextPage = () => { if (currentPage < totalPages) setCurrentPage(currentPage + 1); };
   const goToPreviousPage = () => { if (currentPage > 1) setCurrentPage(currentPage - 1); };
 
   const handleRefresh = () => {
     setSelectedIds([]); 
+    setSearchTerm(''); 
     fetchDocuments();
   };
 
@@ -98,13 +114,15 @@ const Inbox = () => {
     <div className="w-full h-full flex flex-col">
       <div className="bg-white rounded-3xl border border-zinc-100 shadow-sm flex-1 flex flex-col overflow-hidden">
         
-        {/* INYECTAMOS LOS COMPONENTES CREADOS */}
+        {/* LOS COMPONENTES CREADOS */}
         <DocumentToolbar 
           selectedIds={selectedIds}
           isAllCurrentChecked={isAllCurrentChecked}
           handleSelectAll={handleSelectAll}
           handleRefresh={handleRefresh}
           handleBulkAction={handleBulkAction}
+          searchTerm={searchTerm}          
+          setSearchTerm={setSearchTerm}   
         />
 
         <DocumentTable 

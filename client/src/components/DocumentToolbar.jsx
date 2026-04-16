@@ -2,7 +2,8 @@ import {
   ArchiveBoxIcon,
   EnvelopeOpenIcon,
   ArrowPathIcon,
-  StarIcon
+  StarIcon,
+  MagnifyingGlassIcon
 } from '@heroicons/react/24/outline'; 
 
 const DocumentToolbar = ({ 
@@ -10,10 +11,14 @@ const DocumentToolbar = ({
   isAllCurrentChecked, 
   handleSelectAll, 
   handleRefresh, 
+  searchTerm,
+  setSearchTerm,
   handleBulkAction 
 }) => {
   return (
     <div className="flex items-center px-8 py-3 border-b border-zinc-100 bg-zinc-50/40 gap-4 shrink-0 transition-all min-h-[56px]">
+
+      
       
       {/* Controles Fijos */}
       <div className="flex items-center gap-4">
@@ -31,6 +36,8 @@ const DocumentToolbar = ({
           <ArrowPathIcon className="w-5 h-5" strokeWidth={2} />
         </button>
       </div>
+
+      
 
       {/* Controles para los seleccionados */}
       {selectedIds.length > 0 && (
@@ -64,6 +71,17 @@ const DocumentToolbar = ({
           </span>
         </div>
       )}
+
+      <div className="relative w-full max-w-2xl">
+        <MagnifyingGlassIcon className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
+        <input
+          type="text"
+          placeholder="Buscar por asunto, departamento o remitente..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full pl-11 pr-4 py-2.5 bg-white border border-zinc-200 rounded-xl text-sm focus:ring-2 focus:ring-sky-100 focus:border-sky-400 outline-none transition shadow-sm"
+        />
+      </div>  
     </div>
   );
 };
