@@ -32,7 +32,7 @@ const DocumentToolbar = ({
         </button>
       </div>
 
-      {/* Controles Dinámicos (Solo aparecen si hay seleccionados) */}
+      {/* Controles para los seleccionados */}
       {selectedIds.length > 0 && (
         <div className="flex items-center gap-2 border-l border-zinc-300 pl-4 text-zinc-600 transition-all">
           <button 

@@ -85,7 +85,7 @@ const DocumentTable = ({
                 <td className="px-2 py-5 truncate">
                   <div className="flex flex-col truncate">
                     <span className={`text-base truncate ${isRead && !isChecked ? 'font-medium text-zinc-500' : 'font-bold text-zinc-800'}`}>
-                      {doc.sender?.department || 'Departamento Genersdadaal'}
+                      {doc.sender?.department || 'Departamento General'}
                     </span>
                     <span className={`text-xs truncate ${isRead && !isChecked ? 'text-zinc-400' : 'text-zinc-500 font-medium'}`}>
                       {`${doc.sender?.position} - ${doc.sender?.fullName} `  || 'Usuario desconocido'}
