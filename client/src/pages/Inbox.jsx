@@ -85,8 +85,26 @@ const Inbox = () => {
     e.stopPropagation(); 
     try {
       await api.put(`/oficios/${id}/star`, { status: !currentStatus });
-      setDocuments(prevDocs => prevDocs.map(doc => (doc.id === id || doc._id === id) ? { ...doc, starred: !currentStatus } : doc));
-    } catch (err) {
+      setDocuments(prevDocs => prevDocs.map(doc => {
+      // Si es el oficio que hay q actualizar
+        if (doc.id === id ) {
+          return {
+            ...doc,
+            // Entra a recipients para actualizar estado 
+            recipients: doc.recipients.map(r => {
+              const recipientId = r.user;
+              
+              // Si el destinatario coincide actualiza estado
+              if (String(recipientId) === String(currentUserId)) {
+                return { ...r, isStarred: !currentStatus };
+              }
+              return r;
+            })
+          };
+        }
+      return doc;
+    }));
+  } catch (err) {
       console.error("Error toggling star:", err);
     }
   };
