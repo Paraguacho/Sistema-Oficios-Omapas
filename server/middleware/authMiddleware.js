@@ -9,15 +9,15 @@ const protect = (req,res, next)=>{
 
         try {
             //Verificar con mi jwt
-            decoded = jwt.verify(token, process.env.JWT_SECRET);
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
             //Guardar datos en peticion
             req.user = decoded;
-            next();
         } catch (error) {
             return res.status(401).json({
                 message: 'Token expirado o no valido'
             })
         }
+        next();
     }
     if(!token){
         return res.status(401).json({
