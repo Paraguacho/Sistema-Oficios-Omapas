@@ -73,7 +73,7 @@ const Inbox = () => {
   };
 
   const handleSelectAll = (e) => {
-    const currentPageIds = currentDocuments.map(doc => doc.id || doc._id);
+    const currentPageIds = currentDocuments.map(doc => doc.id);
     if (e.target.checked) {
       setSelectedIds(prev => [...new Set([...prev, ...currentPageIds])]); 
     } else {
@@ -126,7 +126,7 @@ const Inbox = () => {
     }
   };
 
-  const isAllCurrentChecked = currentDocuments.length > 0 && currentDocuments.every(doc => selectedIds.includes(doc.id || doc._id));
+  const isAllCurrentChecked = currentDocuments.length > 0 && currentDocuments.every(doc => selectedIds.includes(doc.id));
 
   return (
     <div className="w-full h-full flex flex-col">

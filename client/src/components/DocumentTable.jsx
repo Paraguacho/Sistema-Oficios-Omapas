@@ -54,27 +54,27 @@ const DocumentTable = ({
             const isStarred = myStatus.isStarred === true;
             const isUrgent = doc.priority === 'Urgente' || doc.priority === 'Alta';
             const requiresSignature = doc.requiresSignature;
-            const isChecked = selectedIds.includes(doc.id || doc._id);
+            const isChecked = selectedIds.includes(doc.id);
 
             return (
               <tr 
-                key={doc.id || doc._id} 
+                key={doc.id} 
                 className={`transition group cursor-pointer border-b border-zinc-50 ${
                     isChecked ? 'bg-sky-50/50' : (isRead ? 'bg-zinc-50/80 opacity-60' : 'bg-white hover:bg-sky-50/40')
                 }`}
-                onClick={() => handleSelectRow(doc.id || doc._id)} 
+                onClick={() => handleSelectRow(doc.id)} 
               >
                 <td className="px-8 py-5">
                   <div className="flex items-center gap-4">
                     <input
                       type="checkbox"
                       checked={isChecked}
-                      onChange={() => handleSelectRow(doc.id || doc._id)}
+                      onChange={() => handleSelectRow(doc.id)}
                       onClick={(e) => e.stopPropagation()} 
                       className="w-[18px] h-[18px] rounded border-zinc-300 text-sky-600 focus:ring-sky-600 cursor-pointer"
                     />
                     <button
-                      onClick={(e) => toggleSingleStar(e, doc.id || doc._id, isStarred)}
+                      onClick={(e) => toggleSingleStar(e, doc.id, isStarred)}
                       className="text-zinc-300 hover:text-amber-400 transition transform hover:scale-110"
                     >
                       {isStarred ? <StarIconSolid className="w-6 h-6 text-amber-400" /> : <StarIcon className="w-6 h-6" />}
