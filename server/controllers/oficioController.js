@@ -229,6 +229,21 @@ const getArchived = async (req,res) =>{
         })
     }
 };
+const getSigned = async (req,res) => {
+    try {
+        const oficios = await oficioDAO.getSignedOficios(req.user.id);
+        const oficiosDTO = oficios.map(oficio => new OficioDTO(oficio));
+        res.status(200).json({
+            count: oficiosDTO.length,
+            data: oficiosDTO
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error al cargar firmados',
+            error: error.message
+        })
+    }
+}
 
 module.exports = {
     createOficio,
@@ -241,5 +256,6 @@ module.exports = {
     toggleStarred,
     toggleArchived,
     getStarred,
-    getArchived
+    getArchived,
+    getSigned
 }

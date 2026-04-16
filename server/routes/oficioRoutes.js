@@ -14,7 +14,8 @@ const {
     toggleStarred,
     toggleArchived,
     getStarred,
-    getArchived
+    getArchived,
+    getSigned
 } = require('../controllers/oficioController')
 
 
@@ -24,6 +25,7 @@ router.get('/sent', protect, getSent);
 router.get('/starred', protect, getStarred);
 router.get('/archived', protect, getArchived);
 router.get('/search',protect, searchOficio);
+router.get('/signed', protect, getSigned)
 //Ruta crear
 router.post('/',protect, createOficio);
 //Ruta de un oficio especifico

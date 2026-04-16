@@ -135,6 +135,18 @@ class OficioDAO {
         }    
     }
 
+    async getSignedOficios(userId){
+        try {
+            return await Oficio.find({
+                'recipients' : {$elemMatch: {user: userId, signed: true}}
+            })
+            .populate('sender', 'name fatherName department position')
+            .sort({createdAt: -1})
+        } catch (error) {
+            throw error;
+        }
+    }
+
     async getStarredOficios(userId){
         try {
             return await Oficio.find({
