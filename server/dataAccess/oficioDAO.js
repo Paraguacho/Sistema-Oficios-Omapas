@@ -9,7 +9,7 @@ class OficioDAO {
                 'oficio_seq',
                 {$inc: {seq: 1}},
                 //Si no encuentra, lo crea
-                {new: true, upsert : true}
+                {returnDocument: 'after', upsert : true} 
             );
             //Asigna el contador al folio
             oficioData.consecutive = counter.seq;
@@ -34,7 +34,7 @@ class OficioDAO {
     async getSentOficios(userId) {
         try {
             return await Oficio.find({sender: userId})
-                .populate('recipients.user', 'name fatherName department')
+                .populate('recipients.user', 'name fatherName department position')
                 .sort({createdAt: - 1});
         } catch (error) {
             throw error;
