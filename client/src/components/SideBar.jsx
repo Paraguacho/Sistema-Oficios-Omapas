@@ -64,12 +64,12 @@ return (
                 Firmados
             </Link>
 
-            <Link to='/archived' className={navItemClass('/archived')}>
+            <Link to='/archived2' className={navItemClass('/archive2')}>
                 <Squares2X2Icon className='w-6 h-6'/>
                 Panel Trazabilidad
             </Link>
 
-            <Link to='/archived' className={navItemClass('/archived')}>
+            <Link to='/archived2' className={navItemClass('/archived2')}>
                 <Cog6ToothIcon className='w-6 h-6'/>
                 Configuracion
             </Link>
