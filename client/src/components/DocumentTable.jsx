@@ -86,13 +86,35 @@ const DocumentTable = ({
                     </button>
                   </div>
                 </td>
-
                 <td className="px-2 py-5 truncate">
                   <div className="flex flex-col truncate">
                     {trayType === 'sent' ? (
-                      <span className='text-base truncate font-medium text-zinc-500'>
-                        {oficio.recipients?.length} Destinatario(s) 
-                      </span> 
+                      oficio.recipients?.length === 1 ? (
+                        <>
+                          <span className='text-base truncate font-medium text-zinc-500'>
+                            {oficio.recipients[0].user?.department || 'Departamento General'}
+                          </span> 
+                          <span className='text-base truncate font-medium text-zinc-500'>
+                            {`${oficio.recipients[0].user.position} - ${oficio.recipients[0].user?.fullName}` || 'Usuario desconocido'}
+                            
+                          </span> 
+                        </>
+                      
+                      //Multiples destinatarios
+                      ) : (
+                        <>
+                          <span className='text-base truncate font-medium text-zinc-500'>
+                            Multiples departamentos
+                          </span> 
+                          <span className='text-base truncate font-medium text-zinc-500'>
+                            {oficio.recipients && oficio.recipients[0]?.user?.fullName
+                             ? `${oficio.recipients[0].user.position} - ${oficio.recipients[0].user.fullName} y ${oficio.recipients.length - 1} más`
+                             : `${oficio.recipients?.length} Destinatarios`
+                            }
+                          </span>
+                          
+                        </>
+                      )
                     ) :  (
                       //cambio por <>, div falla visual
                       <>
