@@ -3,7 +3,8 @@ import {
   EnvelopeOpenIcon,
   ArrowPathIcon,
   StarIcon,
-  MagnifyingGlassIcon
+  MagnifyingGlassIcon,
+  ArrowUpOnSquareIcon
 } from '@heroicons/react/24/outline'; 
 
 const DocumentToolbar = ({ 
@@ -13,7 +14,8 @@ const DocumentToolbar = ({
   handleRefresh, 
   searchTerm,
   setSearchTerm,
-  handleBulkAction 
+  handleBulkAction,
+  trayType
 }) => {
   return (
     <div className="flex items-center px-8 py-3 border-b border-zinc-100 bg-zinc-50/40 gap-4 shrink-0 transition-all min-h-[56px]">
@@ -51,12 +53,16 @@ const DocumentToolbar = ({
           </button>
           
           <button 
-            onClick={() => handleBulkAction('archive')} 
-            className="p-1.5 hover:bg-white hover:shadow-sm hover:text-sky-600 rounded-lg transition border border-transparent hover:border-zinc-200" 
-            title="Archivar seleccionados"
-          >
-            <ArchiveBoxIcon className="w-5 h-5" strokeWidth={2} />
-          </button>
+              onClick={() => handleBulkAction(trayType === 'archived' ? 'unarchive' : 'archive')} 
+              className="p-1.5 hover:bg-white hover:shadow-sm hover:text-sky-600 rounded-lg transition border border-transparent hover:border-zinc-200" 
+              title={trayType === 'archived' ? "Desarchivar seleccionados" : "Archivar seleccionados"}
+            >
+              {trayType === 'archived' ? (
+                <ArrowUpOnSquareIcon className="w-5 h-5" strokeWidth={2} />
+              ) : (
+                <ArchiveBoxIcon className="w-5 h-5" strokeWidth={2} />
+              )}
+            </button>
           
           <button 
             onClick={() => handleBulkAction('star')} 

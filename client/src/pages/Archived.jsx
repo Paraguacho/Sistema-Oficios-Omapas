@@ -114,8 +114,9 @@ const Archived = () => {
       setIsLoading(true);
       await Promise.all(selectedIds.map(id => {
         if (actionType === 'read') return api.put(`/oficios/${id}/seen`);
-        if (actionType === 'archive') return api.put(`/oficios/${id}/archive`, { status: true });
         if (actionType === 'star') return api.put(`/oficios/${id}/star`, { status: true });
+        if (actionType === 'unarchive') return api.put(`/oficios/${id}/archive`, { status: false });
+        if (actionType === 'archive') return api.put(`/oficios/${id}/archive`, { status: true });
       }));
       await fetchDocuments(); 
       setSelectedIds([]); 
@@ -140,7 +141,8 @@ const Archived = () => {
           handleRefresh={handleRefresh}
           handleBulkAction={handleBulkAction}
           searchTerm={searchTerm}          
-          setSearchTerm={setSearchTerm}   
+          setSearchTerm={setSearchTerm}  
+          trayType="archived" 
         />
 
         <DocumentTable 
