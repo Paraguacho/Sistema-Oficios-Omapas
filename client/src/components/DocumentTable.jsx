@@ -20,6 +20,7 @@ const DocumentTable = ({
   goToNextPage,
   currentUserId,
   trayType = 'inbox',
+  onViewDocument
 }) => {
   return (
     <div className="flex-1 overflow-y-auto">
@@ -67,15 +68,23 @@ const DocumentTable = ({
                 className={`transition group cursor-pointer border-b border-zinc-50 ${
                     isChecked ? 'bg-sky-50/50' : (isRead ? 'bg-zinc-50/80 opacity-60' : 'bg-white hover:bg-sky-50/40')
                 }`}
-                onClick={() => handleSelectRow(oficio.id)} 
+                onClick={() => onViewDocument(oficio)} 
               >
                 <td className="px-8 py-5">
                   <div className="flex items-center gap-4">
                     <input
                       type="checkbox"
                       checked={isChecked}
-                      onChange={() => handleSelectRow(oficio.id)}
-                      onClick={(e) => e.stopPropagation()} 
+                      onChange={(e) => {
+                        e.stopPropagation();
+                        handleSelectRow(oficio.id)}}
+
+                      //Modal fallo 
+                      onChange={(e) => {
+                        e.stopPropagation();
+                        handleSelectRow(oficio.id);
+                      }}
+                      onClick={(e) => e.stopPropagation()}
                       className="w-[18px] h-[18px] rounded border-zinc-300 text-sky-600 focus:ring-sky-600 cursor-pointer"
                     />
                     <button
