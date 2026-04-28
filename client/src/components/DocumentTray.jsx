@@ -29,6 +29,8 @@ const DocumentTray = ({ fetchPath, trayType }) => {
     fetchDocuments();
   }, [fetchPath]); //Recargar pagina
 
+
+  //Refresh
   const fetchDocuments = async () => {
     try {
       setIsLoading(true);
@@ -37,6 +39,7 @@ const DocumentTray = ({ fetchPath, trayType }) => {
     } catch (err) { console.error("Error fetching documents:", err);
     } finally { setIsLoading(false); }
   };
+
 
   
   const handleViewDocument = async (doc) => {
@@ -62,12 +65,6 @@ const DocumentTray = ({ fetchPath, trayType }) => {
         } catch (err) { console.error("Error al marcar como leído:", err); }
       }
     }
-  };
-
-  const handleRefresh = () => {
-    setSelectedIds([]); 
-    setSearchTerm(''); 
-    fetchDocuments();
   };
 
   const handleSelectRow = (id) => {
@@ -146,7 +143,6 @@ const DocumentTray = ({ fetchPath, trayType }) => {
           handleBulkAction={handleBulkAction}
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
-          handleRefresh={handleRefresh}
           trayType={trayType}
         />
 
