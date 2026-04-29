@@ -8,10 +8,10 @@ import {
     ArchiveBoxIcon,
     PencilSquareIcon,
     Cog6ToothIcon,
-    Squares2X2Icon
+    Squares2X2Icon, 
 } from '@heroicons/react/24/outline';
 
-const Sidebar = () =>{
+const Sidebar = ({onOpenCompose}) =>{
     const navigate = useNavigate();
     //Resaltar 
     const location = useLocation();
@@ -35,6 +35,16 @@ return (
         <div className='flex items-center gap-3 mb-12 px-2'>
             <img src='/src/assets/logoSidebar.png' alt='OOMAPAS' className='rounded-full w-10 h-auto'/>
             <h1 className='text-xl font-bold text-zinc-900 leading-tight tracking-tight'>OOMAPAS</h1>
+        </div>
+
+        <div className='p-6 pb-2'>
+            <button
+                onClick = {onOpenCompose}
+                className= "w-full flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-4 rounded-2xl shadow-lg shadow-sky-200 transition transform hover:-translate-y-0.5"
+            >
+                <PencilSquareIcon className='w-5 h-5' strokeWidth={2.5} />
+                Redactar
+            </button>
         </div>
 
         {/* Nav */}
