@@ -17,13 +17,13 @@ const MainLayout = () =>{
                 </div>
             </main>
             {isComposeOpen && (
-                <ComposeModal>
+                <ComposeModal
                     onClose = {() => setIsComposeOpen(false)}
                     onSuccess={() => {
                         setIsComposeOpen(false);
-                        alert("Oficio enviado?");
+                        alert("Oficio enviado");
                     }}
-                </ComposeModal>
+                />
             )}
 
 

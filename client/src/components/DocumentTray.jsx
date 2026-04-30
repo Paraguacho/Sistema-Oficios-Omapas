@@ -164,7 +164,15 @@ const DocumentTray = ({ fetchPath, trayType }) => {
         {isModalOpen && (
           <DocumentDetailModal 
             document={selectedDocument} 
+            currentUserId={currentUserId} 
             onClose={() => setIsModalOpen(false)} 
+            //Actualziar
+            onUpdate= { (updatedDocuments) => {
+              setDocuments (prev => prev.map (d =>
+                d.id === updatedDocuments.id ? updatedDocuments : d
+              ));
+              setSelectedDocument(updatedDocuments);
+            }}
           />
         )}
       </div>

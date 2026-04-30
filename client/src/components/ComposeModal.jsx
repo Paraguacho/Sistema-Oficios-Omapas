@@ -3,7 +3,7 @@ import { XMarkIcon, PaperAirplaneIcon, UsersIcon } from "@heroicons/react/24/out
 import api from '../api/axios';
 
 const ComposeModal = ({onClose, onSuccess}) =>{
-    const [users, setUsers] = ([useState]);
+    const [users, setUsers] = useState([]);
     const [isLoadingUsers, setIsLoadingUsers] = useState(true);
     const [isSending, setIsSending] = useState(false);
 
@@ -18,7 +18,9 @@ const ComposeModal = ({onClose, onSuccess}) =>{
         const fetchUsers = async () => {
             try {
                 const response = await api.get('/users');
-                setUsers(response.data);
+                //El axios me manda data en la response y en el dao tmb lo guardo como data 
+                const users = response.data.data
+                setUsers(users)
             } catch (error) {
                 console.error('Error al cargar usuarios: ', error);
            } finally{
@@ -124,7 +126,6 @@ const ComposeModal = ({onClose, onSuccess}) =>{
                 className="bg-zinc-100 text-zinc-700 text-sm font-bold rounded-lg px-3 py-1.5 outline-none focus:ring-2 focus:ring-sky-500 border-none cursor-pointer"
               >
                 <option value="Normal">Normal</option>
-                <option value="Alta">Alta</option>
                 <option value="Urgente">Urgente</option>
               </select>
             </div>
