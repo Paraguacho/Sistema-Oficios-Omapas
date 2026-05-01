@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { XMarkIcon, PaperAirplaneIcon, UsersIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon, PaperAirplaneIcon, UsersIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import api from '../api/axios';
 
 const ComposeModal = ({onClose, onSuccess}) =>{
@@ -8,6 +8,7 @@ const ComposeModal = ({onClose, onSuccess}) =>{
     const [isSending, setIsSending] = useState(false);
 
     //Estado del form 
+    const [userSearchTerm, setUserSearchTerm] = useState('');
     const [subject, setSubject] = useState('');
     const [message, setMessage] = useState('');
     const [priority, setPriority] = useState('Normal');
@@ -59,9 +60,19 @@ const ComposeModal = ({onClose, onSuccess}) =>{
         }
     };
 
+    const filteredUsers = users.filter( user => {
+      if (!userSearchTerm) return true;
+      const searchLower = userSearchTerm.toLowerCase();
+      return (
+        (user.fullName || '').toLowerCase().includes(searchLower) || 
+        (user.department || '').toLowerCase().includes(searchLower) || 
+        (user.position || '').toLowerCase().includes(searchLower) 
+      );
+    });
+
     return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/40 backdrop-blur-sm">
-      <div className="bg-white w-full max-w-2xl max-h-[90vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+      <div className="bg-white w-full max-w-3xl h-[85vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden">
         
         {/* Encabezado */}
         <div className="px-6 py-4 border-b border-zinc-100 flex items-center justify-between bg-zinc-50/50">
@@ -72,18 +83,30 @@ const ComposeModal = ({onClose, onSuccess}) =>{
         </div>
 
         {/* Formulario */}
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 flex flex-col gap-5">
+        <form onSubmit={handleSubmit} className="flex-1 flex flex-col p-6 gap-5 overflow-hidden">
           
           {/* Selección de Destinatarios */}
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 shrink-0">
             <label className="text-xs uppercase tracking-widest font-bold text-zinc-400 flex items-center gap-2">
               <UsersIcon className="w-4 h-4" /> Para:
             </label>
-            <div className="border border-zinc-200 rounded-xl max-h-40 overflow-y-auto p-2 bg-zinc-50/30">
+            {/* Campo de busqueda */}
+            <div className="relative">
+                <MagnifyingGlassIcon className="w-4 h-4 text-zinc-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+                <input 
+                  type="text" 
+                  placeholder="Buscar por nombre, depto o puesto..." 
+                  value={userSearchTerm}
+                  onChange={(e) => setUserSearchTerm(e.target.value)}
+                  className="pl-8 pr-3 py-1 text-sm border border-zinc-200 rounded-lg focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none w-64 md:w-80 transition bg-zinc-50 focus:bg-white"
+                />
+            </div>
+
+            <div className="border border-zinc-200 rounded-xl max-h-32 overflow-y-auto p-2 bg-zinc-50/30">
               {isLoadingUsers ? (
                 <p className="text-sm text-zinc-400 p-2">Cargando directorio...</p>
-              ) : (
-                users.map(user => (
+              ) : filteredUsers.length > 0 ? (
+                filteredUsers.map(user => (
                   <label key={user.id} className="flex items-center gap-3 p-2 hover:bg-sky-50 rounded-lg cursor-pointer transition">
                     <input 
                       type="checkbox" 
@@ -93,19 +116,22 @@ const ComposeModal = ({onClose, onSuccess}) =>{
                     />
                     <div className="flex flex-col">
                       <span className="text-sm font-bold text-zinc-700">{user.fullName }</span>
-                      <span className="text-xs text-zinc-500">{user.department || 'Sin departamento'}</span>
+                      <span className="text-xs text-zinc-500">{user.department || 'Sin departamento'} {user.position ? ` - ${user.position}` : ''}</span>
                     </div>
                   </label>
                 ))
+              ) : (
+                <p className="text-sm text-zinc-400 p-2 text-center italic"> No se encontraron usuarios que coincidan con la búsqueda. </p>
               )}
             </div>
+
             <span className="text-xs text-sky-600 font-medium ml-1">
               {selectedUsers.length} destinatario(s) seleccionado(s)
             </span>
           </div>
 
           {/* Asunto */}
-          <div>
+          <div className="shrink-0">
             <input 
               type="text" 
               placeholder="Asunto del oficio" 
@@ -117,7 +143,7 @@ const ComposeModal = ({onClose, onSuccess}) =>{
           </div>
 
           {/* Opciones (Prioridad y Firma) */}
-          <div className="flex items-center gap-6 py-2">
+          <div className="flex items-center gap-6 py-2 shrink-0">
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium text-zinc-500">Prioridad:</span>
               <select 
@@ -144,7 +170,7 @@ const ComposeModal = ({onClose, onSuccess}) =>{
           </div>
 
           {/* Cuerpo del Mensaje */}
-          <div className="flex-1 min-h-[200px]">
+          <div className="flex-1 flex flex-col min-h-0 mt-2">
             <textarea 
               placeholder="Redacta el cuerpo del oficio aquí..." 
               value={message}
@@ -155,7 +181,7 @@ const ComposeModal = ({onClose, onSuccess}) =>{
         </form>
 
         {/* Footer (Botón Enviar) */}
-        <div className="px-6 py-4 bg-zinc-50 border-t border-zinc-100 flex justify-end gap-3">
+        <div className="px-6 py-4 bg-zinc-50 border-t border-zinc-100 flex justify-end gap-3 shrink-0">
           <button onClick={onClose} className="px-5 py-2.5 text-sm font-bold text-zinc-500 hover:bg-zinc-200/50 rounded-xl transition">
             Cancelar
           </button>
