@@ -10,6 +10,7 @@ import {CheckBadgeIcon} from '@heroicons/react/24/solid';
 import api from '../api/axios';
 
 const DocumentDetailModal = ({ document: oficio, onClose, currentUserId, onUpdate }) => {
+  const [isJustSigned, setIsJustSigned] = useState(false);
   const [isSigning, setIsSigning] = useState(false);
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
   const [password, setPassword] = useState('');
@@ -21,27 +22,38 @@ const DocumentDetailModal = ({ document: oficio, onClose, currentUserId, onUpdat
   });
   const isRecipient = !!myStatus;
   //Yo ya firme
-  const hasSigned = !!myStatus?.signed
+  const hasSigned = isJustSigned || myStatus?.signed
+
   const handleSign = async (e) => {
-    e.preventDefault();
-    if(!password.trim()) return alert('Debes ingresar tu contraseña para firmar. ');
+    e.preventDefault(); 
+    if (!password.trim()) return alert("Debes ingresar tu contraseña para firmar.");
+
     try {
       setIsSigning(true);
-      await api.put(`/oficios/${oficio.id}/sign`, {password});
+      const response = await api.put(`/oficios/${oficio.id}/sign`, { password });
+      
+      const realSignature = response.data?.signature || response.data?.signatureHash || "FIRMADO";
+      setIsJustSigned(true);
       const updatedOficio = {
-        ...oficio,
-        recipients: oficio.recipients.map(r => 
-          String(r.user) === String(currentUserId)
-          ? {...r, signature: "Firmado"} : r
-        )
+        ...document,
+        recipients: document.recipients.map(r => {
+          const recipientId = r.user;
+          if (String(recipientId).trim() === String(currentUserId).trim()) {
+            return { ...r, signed: true, signatureHash: realSignature }; 
+          }
+          return r;
+        })
       };
-      onUpdate(updatedOficio)
+      
+      onUpdate(updatedOficio);
       setShowPasswordPrompt(false); 
-      setPassword('')
+      setPassword('');
 
-    }catch (error) {
-      console.error("Error al firmar el documento:",error);
-      alert(error.response.data.message || "Error al firmar. Verifica la contraseña");
+    } catch (error) {
+      console.error("Error al firmar el documento:", error);
+      alert(error.response?.data?.message || "Error al firmar. Verifica tu contraseña.");
+      //si falla cambia sello
+      setIsJustSigned(false); 
     } finally {
       setIsSigning(false);
     }

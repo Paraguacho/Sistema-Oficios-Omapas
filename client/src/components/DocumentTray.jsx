@@ -4,6 +4,7 @@ import api from '../api/axios';
 import DocumentToolbar from './DocumentToolbar';
 import DocumentTable from './DocumentTable';
 import DocumentDetailModal from './DocumentDetailModal';
+import TraceabilityModal from './TraceabilityModal';
 
 const DocumentTray = ({ fetchPath, trayType }) => {
   const [documents, setDocuments] = useState([]);
@@ -16,7 +17,7 @@ const DocumentTray = ({ fetchPath, trayType }) => {
 
   // Estado para el Modal
   const [selectedDocument, setSelectedDocument] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeModal, setActiveModal] = useState(null); 
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -42,26 +43,34 @@ const DocumentTray = ({ fetchPath, trayType }) => {
 
 
   
-  const handleViewDocument = async (doc) => {
-    setSelectedDocument(doc);
-    setIsModalOpen(true);
+  const handleViewDocument = async (oficio) => {
+    setSelectedDocument(oficio);
 
-    // Solo leido si es diferente 
-    if (trayType !== 'sent') {
-      const myStatus = doc.recipients?.find(r => 
+    if (trayType === 'sent') {
+      setActiveModal('trace');
+    } else {
+      setActiveModal('read');
+
+      const myStatus = oficio.recipients?.find(r => 
         String(r.user) === String(currentUserId)
       );
       
       if (myStatus && !myStatus.seen) {
         try {
-          await api.put(`/oficios/${doc.id}/seen`);
-          // Actualización local para que cambie a gris 
-          setDocuments(prev => prev.map(d => (d.id === doc.id) ? {
-            ...d,
-            recipients: d.recipients.map(r => 
-              String(r.user) === String(currentUserId) ? { ...r, seen: true } : r
-            )
-          } : d));
+          const targetId = oficio.id; 
+          await api.put(`/oficios/${targetId}/seen`);
+          
+          setDocuments(prev => prev.map(d => {
+            const currentId = d.id; 
+            
+            // Comparar id 
+            return currentId === targetId ? {
+              ...d,
+              recipients: d.recipients.map(r => 
+                String(r.user) === String(currentUserId) ? { ...r, seen: true } : r
+              )
+            } : d;
+          }));
         } catch (err) { console.error("Error al marcar como leído:", err); }
       }
     }
@@ -75,13 +84,13 @@ const DocumentTray = ({ fetchPath, trayType }) => {
     e.stopPropagation(); 
     try {
       await api.put(`/oficios/${id}/star`, { status: !currentStatus });
-      setDocuments(prevDocs => prevDocs.map(doc => {
+      setDocuments(prevDocs => prevDocs.map(oficio => {
       // Si es el oficio que hay q actualizar
-        if (doc.id === id ) {
+        if (oficio.id === id ) {
           return {
-            ...doc,
+            ...oficio,
             // Entra a recipients para actualizar estado 
-            recipients: doc.recipients.map(r => {
+            recipients: oficio.recipients.map(r => {
               const recipientId = r.user;
               
               // Si el destinatario coincide actualiza estado
@@ -92,7 +101,7 @@ const DocumentTray = ({ fetchPath, trayType }) => {
             })
           };
         }
-      return doc;
+      return oficio;
     }));
   } catch (err) {
       console.error("Error toggling star:", err);
@@ -117,7 +126,7 @@ const DocumentTray = ({ fetchPath, trayType }) => {
   };
   
 
-  // Lógica de filtrado y paginación
+  // Logica filtrado paginacion 
   const filteredDocuments = documents.filter(doc => {
     if (!searchTerm) return true;
     const lower = searchTerm.toLowerCase();
@@ -161,20 +170,31 @@ const DocumentTray = ({ fetchPath, trayType }) => {
           goToNextPage={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
         />
 
-        {isModalOpen && (
+        {activeModal === 'read' && (
           <DocumentDetailModal 
             document={selectedDocument} 
-            currentUserId={currentUserId} 
-            onClose={() => setIsModalOpen(false)} 
-            //Actualziar
-            onUpdate= { (updatedDocuments) => {
-              setDocuments (prev => prev.map (d =>
-                d.id === updatedDocuments.id ? updatedDocuments : d
-              ));
-              setSelectedDocument(updatedDocuments);
+            currentUserId={currentUserId}
+            onClose={() => setActiveModal(null)} 
+            onUpdate={(updatedOficio) => {
+              const targetId = updatedOficio._id || updatedOficio.id; 
+              
+              setDocuments(prev => prev.map(d => {
+                const currentId =  d.id; 
+                return currentId === targetId ? updatedOficio : d; 
+              }));
+              
+              setSelectedDocument(updatedOficio);
             }}
           />
         )}
+
+        {activeModal === 'trace' && (
+          <TraceabilityModal 
+            document={selectedDocument} 
+            onClose={() => setActiveModal(null)} 
+          />
+        )}
+
       </div>
     </div>
   );
