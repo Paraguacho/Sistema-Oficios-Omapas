@@ -35,8 +35,8 @@ const DocumentDetailModal = ({ document: oficio, onClose, currentUserId, onUpdat
       const realSignature = response.data?.signature || response.data?.signatureHash || "FIRMADO";
       setIsJustSigned(true);
       const updatedOficio = {
-        ...document,
-        recipients: document.recipients.map(r => {
+        ...oficio,
+        recipients: oficio.recipients.map(r => {
           const recipientId = r.user;
           if (String(recipientId).trim() === String(currentUserId).trim()) {
             return { ...r, signed: true, signatureHash: realSignature }; 
