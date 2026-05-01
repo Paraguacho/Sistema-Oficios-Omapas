@@ -15,12 +15,13 @@ const DocumentDetailModal = ({ document: oficio, onClose, currentUserId, onUpdat
   const [password, setPassword] = useState('');
   if (!oficio) return null;
 
-  const myStatus = oficio.recipients?.find(r => 
-    String (r.user) === String(currentUserId)
-  ) || {};
-
+  const myStatus = oficio.recipients?.find(r => {
+    const recipientId = r.user
+    return String (recipientId).trim() === String(currentUserId).trim();
+  });
+  const isRecipient = !!myStatus;
   //Yo ya firme
-  const hasSigned = !!myStatus.signed
+  const hasSigned = !!myStatus?.signed
   const handleSign = async (e) => {
     e.preventDefault();
     if(!password.trim()) return alert('Debes ingresar tu contraseña para firmar. ');
@@ -124,7 +125,7 @@ const DocumentDetailModal = ({ document: oficio, onClose, currentUserId, onUpdat
             </button>
           )}
           
-          {oficio.requiresSignature && (
+          {oficio.requiresSignature && isRecipient && (
             hasSigned ? (
               <div className="flex items-center gap-2 px-6 py-2.5 bg-emerald-50 text-emerald-700 text-sm font-bold rounded-xl border border-emerald-200">
                 <CheckBadgeIcon className="w-5 h-5" />
