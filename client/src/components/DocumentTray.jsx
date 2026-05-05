@@ -131,7 +131,8 @@ const DocumentTray = ({ fetchPath, trayType }) => {
     if (!searchTerm) return true;
     const lower = searchTerm.toLowerCase();
     return (doc.subject || '').toLowerCase().includes(lower) || 
-           (doc.sender?.department || '').toLowerCase().includes(lower);
+           (doc.sender?.department || '').toLowerCase().includes(lower) ||
+           (doc.sender?.fullName || '').toLowerCase().includes(lower)
   });
 
   const totalPages = Math.ceil(filteredDocuments.length / itemsPerPage) || 1;
