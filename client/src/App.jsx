@@ -6,6 +6,7 @@ import Inbox from './pages/Inbox';
 import Sent from './pages/Sent';
 import Starred from './pages/Starred';
 import Archived from './pages/Archived';
+import AdminUsers from './pages/AdminUsers';
 import Signed from './pages/Signed';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route path='/starred' element={<Starred/>}/>
             <Route path='/archived' element={<Archived/>}/>
             <Route path='/signed' element={<Signed/>}/>
+            <Route path="/admin" element={<AdminUsers />} />
          </Route>
         </Route>
         
