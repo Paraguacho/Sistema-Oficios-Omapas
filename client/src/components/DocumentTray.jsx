@@ -52,7 +52,7 @@ const DocumentTray = ({ fetchPath, trayType }) => {
       setActiveModal('read');
 
       const myStatus = oficio.recipients?.find(r => 
-        String(r.user) === String(currentUserId)
+        r.user === currentUserId
       );
       
       if (myStatus && !myStatus.seen) {
@@ -67,7 +67,7 @@ const DocumentTray = ({ fetchPath, trayType }) => {
             return currentId === targetId ? {
               ...d,
               recipients: d.recipients.map(r => 
-                String(r.user) === String(currentUserId) ? { ...r, seen: true } : r
+                r.user === currentUserId ? { ...r, seen: true } : r
               )
             } : d;
           }));
@@ -94,7 +94,7 @@ const DocumentTray = ({ fetchPath, trayType }) => {
               const recipientId = r.user;
               
               // Si el destinatario coincide actualiza estado
-              if (String(recipientId) === String(currentUserId)) {
+              if (recipientId === currentUserId) {
                 return { ...r, isStarred: !currentStatus };
               }
               return r;
@@ -115,6 +115,10 @@ const DocumentTray = ({ fetchPath, trayType }) => {
         if (actionType === 'read') return api.put(`/oficios/${id}/seen`);
         if (actionType === 'archive') return api.put(`/oficios/${id}/archive`, { status: true });
         if (actionType === 'star') return api.put(`/oficios/${id}/star`, { status: true });
+
+        if (actionType === 'unarchive') return api.put(`/oficios/${id}/archive`, { status: false });
+
+        
       }));
       await fetchDocuments(); 
       setSelectedIds([]); 
