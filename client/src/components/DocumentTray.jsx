@@ -111,15 +111,21 @@ const DocumentTray = ({ fetchPath, trayType }) => {
   const handleBulkAction = async (actionType) => {
     try {
       setIsLoading(true);
-      await Promise.all(selectedIds.map(id => {
-        if (actionType === 'read') return api.put(`/oficios/${id}/seen`);
-        if (actionType === 'archive') return api.put(`/oficios/${id}/archive`, { status: true });
-        if (actionType === 'star') return api.put(`/oficios/${id}/star`, { status: true });
-
-        if (actionType === 'unarchive') return api.put(`/oficios/${id}/archive`, { status: false });
-
-        
-      }));
+       if (actionType === 'star') {
+        // Para cada documento seleccionado, alternar su estado actual
+        await Promise.all(selectedIds.map(id => {
+          const oficio = documents.find(oficio => oficio.id === id);
+          const recipientData = oficio?.recipients?.find(r => r.user === currentUserId);
+          const currentStarred = recipientData?.isStarred || false;
+          return api.put(`/oficios/${id}/star`, { status: !currentStarred });
+        }));
+      } else{
+        await Promise.all(selectedIds.map(id => {
+          if (actionType === 'read') return api.put(`/oficios/${id}/seen`);
+          if (actionType === 'archive') return api.put(`/oficios/${id}/archive`, { status: true });
+          if (actionType === 'unarchive') return api.put(`/oficios/${id}/archive`, { status: false });
+        }));
+    }
       await fetchDocuments(); 
       setSelectedIds([]); 
     } catch (error) {
