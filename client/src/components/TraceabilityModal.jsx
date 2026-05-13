@@ -108,7 +108,7 @@ const TraceabilityModal = ({ document: oficio, onClose }) => {
             {/* Contenedor */}
             <div className="flex-1 overflow-y-auto space-y-2 pr-2 min-h-0 border-t border-zinc-100 pt-3">
               {recipients.map(rec => {
-                const recId =  rec.user;
+                const recId = rec.user?.id  
                 const isExpanded = expandedRecipients[recId];
                 
                 
@@ -124,7 +124,7 @@ const TraceabilityModal = ({ document: oficio, onClose }) => {
                     >
                       <div>
                         <p className="text-sm font-bold text-zinc-800">{rec.user?.fullName || 'Cargando...'}</p>
-                        <p className="text-xs text-zinc-500">{rec.user?.department || 'Departamento'}</p>
+                        <p className="text-xs text-zinc-500">{`${rec.user?.department} - ${rec.user?.position}` || 'Departamento'}</p>
                       </div>
 
                       {/* Estatus recibido abierto */}

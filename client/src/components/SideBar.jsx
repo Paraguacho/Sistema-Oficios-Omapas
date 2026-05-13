@@ -56,7 +56,7 @@ return (
 
             <Link to='/sent' className={navItemClass('/sent')}>
                 <PaperAirplaneIcon className='w-6 h-6'/>
-                Enviados
+                Enviados (Trazabilidad)
             </Link>
 
             <Link to='/starred' className={navItemClass('/starred')}>
@@ -74,15 +74,7 @@ return (
                 Firmados
             </Link>
 
-            <Link to='/archived2' className={navItemClass('/archive2')}>
-                <Squares2X2Icon className='w-6 h-6'/>
-                Panel Trazabilidad
-            </Link>
-
-            <Link to='/archived2' className={navItemClass('/archived2')}>
-                <Cog6ToothIcon className='w-6 h-6'/>
-                Configuracion
-            </Link>
+            
 
             
             
